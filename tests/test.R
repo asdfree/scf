@@ -6,17 +6,17 @@ scf_cat <-
 	get_catalog( "scf" ,
 		output_dir = file.path( getwd() ) )
 
-# 2013 only
-scf_cat <- subset( scf_cat , year == 2013 )
+# 2016 only
+scf_cat <- subset( scf_cat , year == 2016 )
 # download the microdata to your local computer
 stopifnot( nrow( scf_cat ) > 0 )
 
 library(survey)
 library(mitools)
 
-scf_imp <- readRDS( file.path( getwd() , "scf 2013.rds" ) )
+scf_imp <- readRDS( file.path( getwd() , "scf 2016.rds" ) )
 
-scf_rw <- readRDS( file.path( getwd() , "scf 2013 rw.rds" ) )
+scf_rw <- readRDS( file.path( getwd() , "scf 2016 rw.rds" ) )
 
 scf_design <- 
 	svrepdesign( 
