@@ -11,7 +11,7 @@ scf_cat <-
 # 2016 only
 scf_cat <- subset( scf_cat , year == 2016 )
 # download the microdata to your local computer
-lodown( "scf" , scf_cat )
+
 
 library(survey)
 library(mitools)
