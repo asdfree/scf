@@ -54,48 +54,48 @@ scf_design <-
 			)
 
 	)
-lodown:::scf_MIcombine( with( scf_design , svyby( ~ one , ~ one , unwtd.count ) ) )
+scf_MIcombine( with( scf_design , svyby( ~ one , ~ one , unwtd.count ) ) )
 
-lodown:::scf_MIcombine( with( scf_design , svyby( ~ one , ~ hhsex , unwtd.count ) ) )
-lodown:::scf_MIcombine( with( scf_design , svytotal( ~ one ) ) )
+scf_MIcombine( with( scf_design , svyby( ~ one , ~ hhsex , unwtd.count ) ) )
+scf_MIcombine( with( scf_design , svytotal( ~ one ) ) )
 
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svyby( ~ one , ~ hhsex , svytotal )
 ) )
-lodown:::scf_MIcombine( with( scf_design , svymean( ~ networth ) ) )
+scf_MIcombine( with( scf_design , svymean( ~ networth ) ) )
 
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svyby( ~ networth , ~ hhsex , svymean )
 ) )
-lodown:::scf_MIcombine( with( scf_design , svymean( ~ edcl ) ) )
+scf_MIcombine( with( scf_design , svymean( ~ edcl ) ) )
 
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svyby( ~ edcl , ~ hhsex , svymean )
 ) )
-lodown:::scf_MIcombine( with( scf_design , svytotal( ~ networth ) ) )
+scf_MIcombine( with( scf_design , svytotal( ~ networth ) ) )
 
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svyby( ~ networth , ~ hhsex , svytotal )
 ) )
-lodown:::scf_MIcombine( with( scf_design , svytotal( ~ edcl ) ) )
+scf_MIcombine( with( scf_design , svytotal( ~ edcl ) ) )
 
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svyby( ~ edcl , ~ hhsex , svytotal )
 ) )
-lodown:::scf_MIcombine( with( scf_design , svyquantile( ~ networth , 0.5 , se = TRUE ) ) )
+scf_MIcombine( with( scf_design , svyquantile( ~ networth , 0.5 , se = TRUE ) ) )
 
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svyby( 
 		~ networth , ~ hhsex , svyquantile , 0.5 ,
 		se = TRUE , keep.var = TRUE , ci = TRUE 
 ) ) )
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svyratio( numerator = ~ income , denominator = ~ networth )
 ) )
 sub_scf_design <- subset( scf_design , lf == 1 )
-lodown:::scf_MIcombine( with( sub_scf_design , svymean( ~ networth ) ) )
+scf_MIcombine( with( sub_scf_design , svymean( ~ networth ) ) )
 this_result <-
-	lodown:::scf_MIcombine( with( scf_design ,
+	scf_MIcombine( with( scf_design ,
 		svymean( ~ networth )
 	) )
 
@@ -105,7 +105,7 @@ confint( this_result )
 cv( this_result )
 
 grouped_result <-
-	lodown:::scf_MIcombine( with( scf_design ,
+	scf_MIcombine( with( scf_design ,
 		svyby( ~ networth , ~ hhsex , svymean )
 	) )
 
@@ -114,22 +114,22 @@ SE( grouped_result )
 confint( grouped_result )
 cv( grouped_result )
 degf( scf_design$designs[[1]] )
-lodown:::scf_MIcombine( with( scf_design , svyvar( ~ networth ) ) )
+scf_MIcombine( with( scf_design , svyvar( ~ networth ) ) )
 # SRS without replacement
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svymean( ~ networth , deff = TRUE )
 ) )
 
 # SRS with replacement
-lodown:::scf_MIcombine( with( scf_design ,
+scf_MIcombine( with( scf_design ,
 	svymean( ~ networth , deff = "replace" )
 ) )
-lodown:::MIsvyciprop( ~ married , scf_design ,
+MIsvyciprop( ~ married , scf_design ,
 	method = "likelihood" )
-lodown:::MIsvyttest( networth ~ married , scf_design )
-lodown:::MIsvychisq( ~ married + edcl , scf_design )
+MIsvyttest( networth ~ married , scf_design )
+MIsvychisq( ~ married + edcl , scf_design )
 glm_result <- 
-	lodown:::scf_MIcombine( with( scf_design ,
+	scf_MIcombine( with( scf_design ,
 		svyglm( networth ~ married + edcl )
 	) )
 	
@@ -137,5 +137,5 @@ summary( glm_result )
 library(convey)
 scf_design$designs <- lapply( scf_design$designs , convey_prep )
 
-lodown:::scf_MIcombine( with( scf_design , svygini( ~ networth ) ) )
+scf_MIcombine( with( scf_design , svygini( ~ networth ) ) )
 
