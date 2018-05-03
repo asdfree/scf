@@ -82,12 +82,17 @@ scf_MIcombine( with( scf_design , svytotal( ~ edcl ) ) )
 scf_MIcombine( with( scf_design ,
 	svyby( ~ edcl , ~ hhsex , svytotal )
 ) )
-scf_MIcombine( with( scf_design , svyquantile( ~ networth , 0.5 , se = TRUE ) ) )
+scf_MIcombine( with( scf_design ,
+	svyquantile(
+		~ networth ,
+		0.5 , se = TRUE , method = 'constant' , interval.type = 'quantile' 
+) ) )
 
 scf_MIcombine( with( scf_design ,
-	svyby( 
-		~ networth , ~ hhsex , svyquantile , 0.5 ,
-		se = TRUE , keep.var = TRUE , ci = TRUE 
+	svyby(
+		~ networth , ~ hhsex , svyquantile ,
+		0.5 , se = TRUE , method = 'constant' , interval.type = 'quantile' ,
+		keep.var = TRUE , ci = TRUE 
 ) ) )
 scf_MIcombine( with( scf_design ,
 	svyratio( numerator = ~ income , denominator = ~ networth )
