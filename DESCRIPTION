@@ -4,7 +4,7 @@ Title: scf
 Version: 0.1.0
 Author: Anthony Joseph Damico
 Maintainer: Anthony Joseph Damico <ajdamico@gmail.com>
-Description: A continuous integration package, tested on ajdamico/asdfree commit bf9729e368f29510f9919385bbd2d206743a91b6 ajdamico/lodown commit e224ec8d5f54d6c16b53e6be07d936c13181bc7c
+Description: A continuous integration package, tested on ajdamico/asdfree commit adf18c021ff84bf850122a0e06b4c2f9e6ea70e8 ajdamico/lodown commit e224ec8d5f54d6c16b53e6be07d936c13181bc7c
 License: GPL-3
 Imports: survey, mitools, convey, lodown
 Encoding: UTF-8
