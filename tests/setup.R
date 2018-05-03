@@ -29,7 +29,7 @@ scf_design <-
 		data = imputationList( scf_imp ) , 
 		scale = 1 ,
 		rscales = rep( 1 / 998 , 999 ) ,
-		mse = TRUE ,
+		mse = FALSE ,
 		type = "other" ,
 		combined.weights = TRUE
 	)
@@ -143,4 +143,24 @@ library(convey)
 scf_design$designs <- lapply( scf_design$designs , convey_prep )
 
 scf_MIcombine( with( scf_design , svygini( ~ networth ) ) )
+
+# compute mean net worth using the 2016 PUF
+mean_net_worth <- scf_scf_MIcombine( with( scf_design , svymean( ~ networth ) ) )
+
+# confirm the estimate and standard error match FRB calculations within one dollar
+stopifnot( round( coef( mean_net_worth ) ) == 689509 )
+stopifnot( round( SE( mean_net_worth ) ) == 12670 )
+
+# compute median net worth using the 2016 PUF
+median_net_worth <-
+	scf_scf_MIcombine( with( scf_design ,
+		svyquantile(
+			~ networth ,
+			0.5 , se = TRUE , method = 'constant' , interval.type = 'quantile' , 
+			method = 'constant' , interval.type = 'quantile' 
+	) ) )
+
+# confirm the estimate and standard error match FRB calculations within one dollar
+stopifnot( round( coef( median_net_worth ) ) == 97306 )
+stopifnot( round( SE( median_net_worth ) ) == 2699 )
 
