@@ -49,7 +49,7 @@ scf_dta_import <-
 		
 		this_df <- data.frame( this_tbl )
 		
-		file.remove( this_file )
+		file.remove( this_tf )
 		
 		names( this_df ) <- tolower( names( this_df ) )
 		
@@ -92,7 +92,7 @@ scf_rw_df[ , paste0( 'wgt' , 1:999 ) ] <-
 scf_rw_df <- scf_rw_df[ , c( 'yy1' , paste0( 'wgt' , 1:999 ) ) ]
 scf_list <- lapply( scf_list , function( w ) w[ order( w[ , 'yy1' ] ) , ] )
 
-scf_rw_df <- scf_rw_df[ order( scf_rw_df$yy1 ) , ]
+scf_rw_df <- scf_rw_df[ order( scf_rw_df[ , 'yy1' ] ) , ]
 library(survey)
 library(mitools)
 
@@ -130,7 +130,7 @@ scf_design <-
 			)
 
 	)
-scf_MIcombine( with( scf_design , svyby( ~ five , ~ one , unwtd.count ) ) )
+scf_MIcombine( with( scf_design , svyby( ~ five , ~ five , unwtd.count ) ) )
 
 scf_MIcombine( with( scf_design , svyby( ~ five , ~ hhsex , unwtd.count ) ) )
 scf_MIcombine( with( scf_design , svytotal( ~ five ) ) )
@@ -215,25 +215,15 @@ glm_result <-
 	) )
 	
 summary( glm_result )
-
-# compute mean net worth using the 2019 PUF
 mean_net_worth <- scf_MIcombine( with( scf_design , svymean( ~ networth ) ) )
 
-# exactly match "Table 4" tab cell W6 of
-# https://www.federalreserve.gov/econres/files/scf2019_tables_public_nominal_historical.xlsx
 stopifnot( round( coef( mean_net_worth ) / 1000 , 2 ) == 746.82 )
-
-# match mean net worth standard error within $100 from
-# https://www.federalreserve.gov/publications/files/scf20.pdf#page=11
 stopifnot( abs( 15.6 - round( SE( mean_net_worth ) / 1000 , 1 ) ) < 0.1 )
-
-# compute quantile with all five implicates stacked
-# matches the public excel tables but not the recommended technique
+# compute quantile with all five implicates stacked (not the recommended technique)
 fake_design <- svydesign( ~ 1 , data = ext_df[ c( 'networth' , 'wgt' ) ] , weights = ~ wgt )
+
 median_net_worth_incorrect_errors <- svyquantile( ~ networth , fake_design , 0.5 )
 
-# exactly match "Table 4" tab cell V6 of
-# https://www.federalreserve.gov/econres/files/scf2019_tables_public_nominal_historical.xlsx
 stopifnot( round( coef( median_net_worth_incorrect_errors ) / 1000 , 2 ) == 121.76 )
 library(convey)
 scf_design$designs <- lapply( scf_design$designs , convey_prep )
