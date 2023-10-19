@@ -56,11 +56,11 @@ scf_dta_import <-
 		this_df
 	}
 
-scf_df <- scf_dta_import( "https://www.federalreserve.gov/econres/files/scf2019s.zip" )
+scf_df <- scf_dta_import( "https://www.federalreserve.gov/econres/files/scf2022s.zip" )
 
-ext_df <- scf_dta_import( "https://www.federalreserve.gov/econres/files/scfp2019s.zip" )
+ext_df <- scf_dta_import( "https://www.federalreserve.gov/econres/files/scfp2022s.zip" )
 
-scf_rw_df <- scf_dta_import( "https://www.federalreserve.gov/econres/files/scf2019rw1s.zip" )
+scf_rw_df <- scf_dta_import( "https://www.federalreserve.gov/econres/files/scf2022rw1s.zip" )
 
 stopifnot( nrow( scf_df ) == nrow( scf_rw_df ) * 5 )
 stopifnot( nrow( scf_df ) == nrow( ext_df ) )
@@ -217,14 +217,14 @@ glm_result <-
 summary( glm_result )
 mean_net_worth <- scf_MIcombine( with( scf_design , svymean( ~ networth ) ) )
 
-stopifnot( round( coef( mean_net_worth ) / 1000 , 2 ) == 746.82 )
-stopifnot( abs( 15.6 - round( SE( mean_net_worth ) / 1000 , 1 ) ) < 0.1 )
+stopifnot( round( coef( mean_net_worth ) / 1000 , 2 ) == 1059.50 )
+stopifnot( abs( 23.2 - round( SE( mean_net_worth ) / 1000 , 1 ) ) < 0.1 )
 # compute quantile with all five implicates stacked (not the recommended technique)
 fake_design <- svydesign( ~ 1 , data = ext_df[ c( 'networth' , 'wgt' ) ] , weights = ~ wgt )
 
 median_net_worth_incorrect_errors <- svyquantile( ~ networth , fake_design , 0.5 )
 
-stopifnot( round( coef( median_net_worth_incorrect_errors ) / 1000 , 2 ) == 121.76 )
+stopifnot( round( coef( median_net_worth_incorrect_errors ) / 1000 , 2 ) == 192.7 )
 library(convey)
 scf_design$designs <- lapply( scf_design$designs , convey_prep )
 
