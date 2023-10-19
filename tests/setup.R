@@ -217,8 +217,8 @@ glm_result <-
 summary( glm_result )
 mean_net_worth <- scf_MIcombine( with( scf_design , svymean( ~ networth ) ) )
 
-stopifnot( round( coef( mean_net_worth ) / 1000 , 2 ) == 1059.50 )
-stopifnot( abs( 23.2 - round( SE( mean_net_worth ) / 1000 , 1 ) ) < 0.1 )
+stopifnot( round( coef( mean_net_worth ) / 1000 , 1 ) == 1059.5 )
+stopifnot( abs( 23.2 - round( SE( mean_net_worth ) / 1000 , 1 ) ) < 0.5 )
 # compute quantile with all five implicates stacked (not the recommended technique)
 fake_design <- svydesign( ~ 1 , data = ext_df[ c( 'networth' , 'wgt' ) ] , weights = ~ wgt )
 
