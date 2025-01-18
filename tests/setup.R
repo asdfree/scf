@@ -1,6 +1,6 @@
 # incomes, assets, debts
 # high net worth oversample
-# pig bank laproscope
+# pig bank lap'roscope
 scf_MIcombine <-
 	function (results, variances, call = sys.call(), df.complete = Inf, ...) {
 		m <- length(results)
